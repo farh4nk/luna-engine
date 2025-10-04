@@ -1,6 +1,7 @@
 import { Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { Sparkles } from "lucide-react";
 
 interface SearchBarProps {
   placeholder?: string;
@@ -37,8 +38,9 @@ export const SearchBar = ({
         />
         <Button 
           type="submit"
-          className="absolute right-2 h-10 rounded-lg bg-secondary hover:bg-secondary/80"
+          className="absolute right-2 h-10 rounded-lg bg-primary hover:bg-primary/80"
         >
+          <Sparkles className="h-5 w-5 text-europa" />
           Search
         </Button>
       </div>

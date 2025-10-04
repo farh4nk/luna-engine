@@ -1,16 +1,25 @@
 import { useState, useEffect } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { SearchBar } from "@/components/SearchBar";
 import { Logo } from "@/components/Logo";
 import { DirectAnswerCard } from "@/components/DirectAnswerCard";
 import { ArticleCard } from "@/components/ArticleCard";
 import { InsightsPanel } from "@/components/InsightsPanel";
 import { ExtractedSummary } from "@/components/ExtractedSummary";
+import { ComparisonDialog } from "@/components/ComparisonDialog";
 
 const SearchResults = () => {
   const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
   const query = searchParams.get('q') || '';
   const [extractedArticles, setExtractedArticles] = useState<string[]>([]);
+  const [comparisonOpen, setComparisonOpen] = useState(false);
+
+  const handleGPTButton = () => {
+      navigate(`/search/compareGPT?q=${encodeURIComponent(query)}`); 
+  };
+  
+
 
   // Sample data - replace with actual API calls
   const directAnswer = "Based on current research, Mars habitability involves multiple factors including atmospheric composition, radiation levels, and potential water sources. Recent studies suggest that subsurface ice deposits may provide crucial resources for future colonization efforts, while the planet's thin atmosphere presents challenges for radiation shielding.";
@@ -82,8 +91,10 @@ const SearchResults = () => {
       <div className="container mx-auto px-6 py-8">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2 space-y-6">
-            <DirectAnswerCard answer={directAnswer} />
-
+            <DirectAnswerCard 
+              answer={directAnswer} 
+              onCompare={() => setComparisonOpen(true)}
+            />
             <div>
               <h2 className="text-2xl font-bold mb-6 text-foreground">Relevant Research Articles</h2>
               <div className="space-y-4">
@@ -132,6 +143,12 @@ const SearchResults = () => {
           </div>
         </div>
       </div>
+      <ComparisonDialog 
+        open={comparisonOpen}
+        onOpenChange={setComparisonOpen}
+        lunaAnswer={directAnswer}
+      />
+      
     </div>
   );
 };
