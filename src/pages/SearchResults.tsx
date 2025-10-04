@@ -19,8 +19,7 @@ const SearchResults = () => {
       navigate(`/search/compareGPT?q=${encodeURIComponent(query)}`); 
   };
   
-
-
+  
   // Sample data - replace with actual API calls
   const directAnswer = "Based on current research, Mars habitability involves multiple factors including atmospheric composition, radiation levels, and potential water sources. Recent studies suggest that subsurface ice deposits may provide crucial resources for future colonization efforts, while the planet's thin atmosphere presents challenges for radiation shielding.";
 
@@ -148,7 +147,7 @@ const SearchResults = () => {
         onOpenChange={setComparisonOpen}
         lunaAnswer={directAnswer}
       />
-      
+
     </div>
   );
 };
