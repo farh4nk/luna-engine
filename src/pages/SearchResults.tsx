@@ -7,17 +7,50 @@ import { ArticleCard } from "@/components/ArticleCard";
 import { InsightsPanel } from "@/components/InsightsPanel";
 import { ExtractedSummary } from "@/components/ExtractedSummary";
 import { ComparisonDialog } from "@/components/ComparisonDialog";
+import { FetchResult, fetchSearchResults } from "../services/fetch";
 
 const SearchResults = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const query = searchParams.get('q') || '';
+  
   const [extractedArticles, setExtractedArticles] = useState<string[]>([]);
   const [comparisonOpen, setComparisonOpen] = useState(false);
-
   const handleGPTButton = () => {
-      navigate(`/search/compareGPT?q=${encodeURIComponent(query)}`); 
+    navigate(`/search/compareGPT?q=${encodeURIComponent(query)}`); 
   };
+
+  const [searchResult, setSearchResult] = useState<FetchResult | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!query) return;
+
+    setLoading(true);
+    setError(null);
+
+    fetchSearchResults({ question: query })
+      .then((data) => {
+        console.log("Fetched results:", data);
+        setSearchResult(data);
+      })
+      .catch((err) => {
+        console.error("Failed to fetch search results:", err);
+        setError("Could not load search results.");
+      })
+      .finally(() => setLoading(false));
+  }, [query]);
+
+  // // Turn this into a loading page until all
+  // if (loading) return <div>Loading results...</div>;
+  // if (error) return <div>{error}</div>;
+  // if (!searchResult) return <div>No results yet.</div>;
+
+  let totalKeyWordSightings = 0
+  let keyWordFreq = {}
+
+  
   
   
   // Sample data - replace with actual API calls
